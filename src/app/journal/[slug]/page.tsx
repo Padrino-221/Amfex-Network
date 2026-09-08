@@ -3,8 +3,39 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { getPostBySlug } from "@/lib/cms";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://amfex-network.vercel.app");
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) return {};
+  return {
+    title: `${post.title} | Emmanuel Amful Owusu`,
+    description: post.excerpt,
+    alternates: { canonical: `${siteUrl}/journal/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `${siteUrl}/journal/${post.slug}`,
+      type: "article",
+      publishedTime: post.date,
+      authors: ["Emmanuel Amful Owusu"],
+      images: post.cover ? [{ url: post.cover, width: 1200, height: 630, alt: post.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: post.cover ? [post.cover] : undefined,
+    },
+  };
+}
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
