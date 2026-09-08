@@ -23,12 +23,30 @@ export async function POST(req: Request) {
       );
     }
 
-    // On Vercel, use Blob Storage if configured; locally fallback to filesystem
-    const hasBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+    const isVideo = VIDEO_TYPES.includes(file.type);
 
-    if (hasBlob) {
+    // 1) Cloudinary — preferred if configured (same as Yedent backend)
+    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+      const { v2: cloudinary } = await import("cloudinary");
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+      const res = await cloudinary.uploader.upload(base64, {
+        folder: process.env.CLOUDINARY_FOLDER || "amfex",
+        resource_type: isVideo ? "video" : "image",
+        overwrite: false,
+      });
+      return NextResponse.json({ data: { url: res.secure_url, filename: res.public_id } }, { status: 201 });
+    }
+
+    // 2) Vercel Blob — if BLOB_READ_WRITE_TOKEN present
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
       const { put } = await import("@vercel/blob");
-      const ext = file.name.split(".").pop() || (VIDEO_TYPES.includes(file.type) ? "mp4" : "png");
+      const ext = file.name.split(".").pop() || (isVideo ? "mp4" : "png");
       const blob = await put(`uploads/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`, file, {
         access: "public",
         addRandomSuffix: false,
@@ -36,18 +54,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ data: { url: blob.url, filename: blob.pathname } }, { status: 201 });
     }
 
-    // Local dev fallback: write to public/uploads (ephemeral on Vercel, persistent locally)
+    // 3) Local fallback: writes to public/uploads (ephemeral on Vercel, persistent locally)
     const { writeFile, mkdir } = await import("fs/promises");
     const path = await import("path");
     const crypto = await import("crypto");
-    const isVideo = VIDEO_TYPES.includes(file.type);
     const ext = path.extname(file.name) || (isVideo ? ".mp4" : ".png");
     const filename = `${Date.now()}-${crypto.randomBytes(4).toString("hex")}${ext}`;
     const dir = path.join(process.cwd(), "public", "uploads");
     await mkdir(dir, { recursive: true });
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(path.join(dir, filename), buffer);
-
     return NextResponse.json({ data: { url: `/uploads/${filename}`, filename } }, { status: 201 });
   } catch (err) {
     console.error("upload error", err);
