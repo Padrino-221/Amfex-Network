@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import crypto from "crypto";
 import { requireAuth } from "@/lib/auth";
 
 const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
@@ -26,6 +23,23 @@ export async function POST(req: Request) {
       );
     }
 
+    // On Vercel, use Blob Storage if configured; locally fallback to filesystem
+    const hasBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+
+    if (hasBlob) {
+      const { put } = await import("@vercel/blob");
+      const ext = file.name.split(".").pop() || (VIDEO_TYPES.includes(file.type) ? "mp4" : "png");
+      const blob = await put(`uploads/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`, file, {
+        access: "public",
+        addRandomSuffix: false,
+      });
+      return NextResponse.json({ data: { url: blob.url, filename: blob.pathname } }, { status: 201 });
+    }
+
+    // Local dev fallback: write to public/uploads (ephemeral on Vercel, persistent locally)
+    const { writeFile, mkdir } = await import("fs/promises");
+    const path = await import("path");
+    const crypto = await import("crypto");
     const isVideo = VIDEO_TYPES.includes(file.type);
     const ext = path.extname(file.name) || (isVideo ? ".mp4" : ".png");
     const filename = `${Date.now()}-${crypto.randomBytes(4).toString("hex")}${ext}`;

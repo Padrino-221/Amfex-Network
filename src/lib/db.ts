@@ -9,12 +9,17 @@ declare global {
   var __pgPool: Pool | undefined;
 }
 
+const isProduction = process.env.NODE_ENV === "production";
+const needsSSL = isProduction || connectionString.includes("neon.tech") || connectionString.includes("vercel-storage") || connectionString.includes("sslmode=require");
+
 export const db =
   globalThis.__pgPool ??
   new Pool({
     connectionString,
-    ssl: false,
-    max: 10,
+    ssl: needsSSL ? { rejectUnauthorized: false } : false,
+    max: Number(process.env.PG_POOL_MAX ?? 10),
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
   });
 
 if (process.env.NODE_ENV !== "production") {
