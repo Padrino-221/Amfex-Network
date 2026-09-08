@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <!-- Background -->
+  <rect width="400" height="400" rx="20" fill="#F0F0F0"/>
+  
+  <!-- Desk -->
+  <rect x="50" y="280" width="300" height="12" rx="6" fill="#E85D04"/>
+  
+  <!-- Person - Woman standing/leaning -->
+  <!-- Body/Shirt -->
+  <path d="M150 180 Q140 230 150 280 L230 280 Q240 230 230 180 Z" fill="#FFB627"/>
+  
+  <!-- Arms -->
+  <!-- Left arm down -->
+  <path d="M150 195 Q120 230 100 260" stroke="#FFD4A8" stroke-width="18" stroke-linecap="round" fill="none"/>
+  <ellipse cx="95" cy="265" rx="10" ry="8" fill="#FFD4A8"/>
+  
+  <!-- Right arm pointing up-right -->
+  <path d="M230 195 Q270 170 310 140" stroke="#FFD4A8" stroke-width="18" stroke-linecap="round" fill="none"/>
+  <ellipse cx="315" cy="135" rx="10" ry="8" fill="#FFD4A8"/>
+  
+  <!-- Head -->
+  <circle cx="190" cy="130" r="42" fill="#FFD4A8"/>
+  
+  <!-- Hair -->
+  <ellipse cx="190" cy="108" rx="48" ry="32" fill="#2D2D2D"/>
+  <ellipse cx="148" cy="128" rx="16" ry="28" fill="#2D2D2D"/>
+  <ellipse cx="232" cy="128" rx="16" ry="28" fill="#2D2D2D"/>
+  <!-- Hair waves -->
+  <path d="M160 95 Q175 85 190 95 Q205 105 220 95" stroke="#4A4A4A" stroke-width="3" fill="none"/>
+  
+  <!-- Face -->
+  <circle cx="175" cy="128" r="4" fill="#2D2D2D"/>
+  <circle cx="205" cy="128" r="4" fill="#2D2D2D"/>
+  <circle cx="177" cy="126" r="1.5" fill="white"/>
+  <circle cx="207" cy="126" r="1.5" fill="white"/>
+  <path d="M180 148 Q190 156 200 148" stroke="#2D2D2D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="165" cy="142" rx="8" ry="5" fill="#FFB6B6" opacity="0.4"/>
+  <ellipse cx="215" cy="142" rx="8" ry="5" fill="#FFB6B6" opacity="0.4"/>
+  
+  <!-- Design element being pointed at - Browser window -->
+  <rect x="280" y="60" width="100" height="80" rx="8" fill="#3A3A3A"/>
+  <rect x="285" y="65" width="90" height="70" rx="4" fill="#4A4A4A"/>
+  <!-- Browser dots -->
+  <circle cx="295" cy="73" r="3" fill="#FF6B6B"/>
+  <circle cx="305" cy="73" r="3" fill="#FFB627"/>
+  <circle cx="315" cy="73" r="3" fill="#66BB6A"/>
+  <!-- Content -->
+  <rect x="295" y="83" width="40" height="5" rx="2" fill="#E85D04"/>
+  <rect x="295" y="93" width="70" height="3" rx="1" fill="#666"/>
+  <rect x="295" y="100" width="60" height="3" rx="1" fill="#666"/>
+  <rect x="295" y="110" width="30" height="20" rx="3" fill="#FFB627"/>
+  <rect x="330" y="110" width="30" height="20" rx="3" fill="#E85D04"/>
+  
+  <!-- Color palette floating -->
+  <rect x="50" y="100" width="70" height="50" rx="8" fill="white"/>
+  <circle cx="70" cy="118" r="10" fill="#E85D04"/>
+  <circle cx="95" cy="118" r="10" fill="#FFB627"/>
+  <circle cx="120" cy="118" r="10" fill="#4CAF50"/>
+  <circle cx="70" cy="138" r="10" fill="#2196F3"/>
+  <circle cx="95" cy="138" r="10" fill="#9C27B0"/>
+  
+  <!-- Pen tool icon -->
+  <path d="M60 200 L80 250 L65 258 L45 208 Z" fill="#FFB627"/>
+  <circle cx="52" cy="198" r="5" fill="#E85D04"/>
+  <line x1="48" y1="205" x2="75" y2="250" stroke="#E85D04" stroke-width="2"/>
+  
+  <!-- Grid/design lines -->
+  <line x1="300" y1="180" x2="380" y2="180" stroke="#E85D04" stroke-width="2" opacity="0.3"/>
+  <line x1="300" y1="200" x2="380" y2="200" stroke="#FFB627" stroke-width="2" opacity="0.3"/>
+  <line x1="300" y1="220" x2="380" y2="220" stroke="#E85D04" stroke-width="2" opacity="0.3"/>
+  <line x1="320" y1="170" x2="320" y2="240" stroke="#E85D04" stroke-width="2" opacity="0.3"/>
+  <line x1="350" y1="170" x2="350" y2="240" stroke="#FFB627" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Decorative shapes -->
+  <rect x="340" y="280" width="40" height="40" rx="8" fill="#FFB627" opacity="0.2" transform="rotate(15 360 300)"/>
+  <circle cx="40" cy="300" r="6" fill="#E85D04" opacity="0.4"/>
+  <polygon points="360,60 370,40 380,60" fill="#FFB627" opacity="0.3"/>
+  
+  <!-- Laptop on desk -->
+  <rect x="180" y="260" width="90" height="15" rx="4" fill="#3A3A3A"/>
+  <rect x="185" y="238" width="80" height="26" rx="4" fill="#2D2D2D"/>
+  <rect x="190" y="242" width="70" height="18" rx="2" fill="#3A3A3A"/>
+</svg>

@@ -1,0 +1,103 @@
+// Prisma schema — Emmanuel Portfolio Custom CMS
+// DB: emmanuel_portfolio @ localhost:5432 (postgres / 1234567890)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Content models ──
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   // Business | Education | Leadership
+  description String   @db.Text
+  tags        String[] // e.g. ["Next.js","React"]
+  image       String   // /GEN AMFUL.png or URL
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  number      String   // 01, 02...
+  title       String
+  description String   @db.Text
+  tags        String[]
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String   @db.Text
+  content   String   @db.Text // markdown / rich text
+  category  String
+  date      DateTime @default(now())
+  readTime  String   // "5 min read"
+  cover     String?  // image url
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String   // Leadership, Technology...
+  description String   @db.Text
+  cover       String?
+  price       Float?
+  link        String?  // external store link
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  src       String   // /uploads/xxx.jpg or external URL
+  title     String
+  category  String   // Events, Business, Ministry...
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  type        String   // PDF, ZIP...
+  fileUrl    String?
+  icon        String?  // svg path
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id        String   @id @default(cuid())
+  key       String   @unique // flat key e.g. "hero_name", "social_links" (JSON-stringified rows)
+  value     String?  @db.Text
+  updatedAt DateTime @updatedAt
+}
